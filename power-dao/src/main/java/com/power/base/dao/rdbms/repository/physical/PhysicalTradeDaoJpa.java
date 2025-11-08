@@ -14,11 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 @Transactional
 public class PhysicalTradeDaoJpa implements PhysicalTradeDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public PhysicalTradeEntity save(PhysicalTradeEntity entity) {

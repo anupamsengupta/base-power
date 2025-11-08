@@ -15,18 +15,40 @@
     <modules>
         <module>power-datamodel</module>
         <module>power-dao</module>
+        <module>power-rest</module>
+        <module>power-component</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
+        <spring.boot.version>3.2.5</spring.boot.version>
+        <java.version>${maven.compiler.release}</java.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Shared dependency management can be added here for modules -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
 

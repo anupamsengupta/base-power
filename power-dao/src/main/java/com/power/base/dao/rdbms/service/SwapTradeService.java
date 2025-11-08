@@ -4,11 +4,13 @@ import com.power.base.dao.rdbms.persistence.swap.SwapTradeEntity;
 import com.power.base.dao.rdbms.repository.swap.SwapTradeDao;
 import com.power.base.dao.rdbms.repository.swap.SwapTradeSearchCriteria;
 import com.power.base.datamodel.dto.financials.SwapPowerTradeDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class SwapTradeService {
 
     private final SwapTradeDao tradeDao;

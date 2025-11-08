@@ -4,11 +4,13 @@ import com.power.base.dao.rdbms.persistence.physical.PhysicalTradeEntity;
 import com.power.base.dao.rdbms.repository.physical.PhysicalTradeDao;
 import com.power.base.dao.rdbms.repository.physical.PhysicalTradeSearchCriteria;
 import com.power.base.datamodel.dto.physicals.PhysicalPowerTradeDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class PhysicalTradeService {
 
     private final PhysicalTradeDao tradeDao;

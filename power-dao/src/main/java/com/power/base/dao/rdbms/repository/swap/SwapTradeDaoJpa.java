@@ -8,17 +8,23 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 @Transactional
 public class SwapTradeDaoJpa implements SwapTradeDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public SwapTradeEntity save(SwapTradeEntity entity) {
