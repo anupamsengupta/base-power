@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -29,7 +31,7 @@ public class SwapTradeController {
     }
 
     @GetMapping("/{tradeId}")
-    public ResponseEntity<SwapPowerTradeDto> findByTradeId(@PathVariable String tradeId) {
+    public ResponseEntity<SwapPowerTradeDto> findByTradeId(@PathVariable("tradeId") String tradeId) {
         return swapTradeService.findByTradeId(tradeId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -43,25 +45,25 @@ public class SwapTradeController {
 
     @GetMapping
     public List<SwapPowerTradeDto> search(
-            @RequestParam(required = false) String businessUnit,
-            @RequestParam(required = false) String market,
-            @RequestParam(required = false) String traderName,
-            @RequestParam(required = false) String agreementId,
-            @RequestParam(required = false) String commodity,
-            @RequestParam(required = false) String transactionType,
-            @RequestParam(required = false) String referenceZone,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate tradeDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant tradeTimeFrom,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant tradeTimeTo) {
+            @RequestParam(name = "businessUnit", required = false) String businessUnit,
+            @RequestParam(name = "market", required = false) String market,
+            @RequestParam(name = "traderName", required = false) String traderName,
+            @RequestParam(name = "agreementId", required = false) String agreementId,
+            @RequestParam(name = "commodity", required = false) String commodity,
+            @RequestParam(name = "transactionType", required = false) String transactionType,
+            @RequestParam(name = "referenceZone", required = false) String referenceZone,
+            @RequestParam(name = "tradeDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate tradeDate,
+            @RequestParam(name = "tradeTimeFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant tradeTimeFrom,
+            @RequestParam(name = "tradeTimeTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant tradeTimeTo) {
 
         SwapTradeSearchCriteria criteria = new SwapTradeSearchCriteria();
-        criteria.setBusinessUnit(businessUnit);
-        criteria.setMarket(market);
-        criteria.setTraderName(traderName);
-        criteria.setAgreementId(agreementId);
-        criteria.setCommodity(commodity);
-        criteria.setTransactionType(transactionType);
-        criteria.setReferenceZone(referenceZone);
+        criteria.setBusinessUnit(decode(businessUnit));
+        criteria.setMarket(decode(market));
+        criteria.setTraderName(decode(traderName));
+        criteria.setAgreementId(decode(agreementId));
+        criteria.setCommodity(decode(commodity));
+        criteria.setTransactionType(decode(transactionType));
+        criteria.setReferenceZone(decode(referenceZone));
         criteria.setTradeDate(tradeDate);
         criteria.setTradeTimeFrom(tradeTimeFrom);
         criteria.setTradeTimeTo(tradeTimeTo);
@@ -70,9 +72,13 @@ public class SwapTradeController {
     }
 
     @DeleteMapping("/{tradeId}")
-    public ResponseEntity<Void> delete(@PathVariable String tradeId) {
+    public ResponseEntity<Void> delete(@PathVariable("tradeId") String tradeId) {
         swapTradeService.deleteByTradeId(tradeId);
         return ResponseEntity.noContent().build();
+    }
+
+    private String decode(String value) {
+        return value == null ? null : UriUtils.decode(value, StandardCharsets.UTF_8);
     }
 }
 

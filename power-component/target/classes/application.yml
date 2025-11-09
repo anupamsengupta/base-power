@@ -15,6 +15,8 @@ spring:
         dialect: ${POWER_JPA_DIALECT:org.hibernate.dialect.H2Dialect}
   main:
     banner-mode: console
+  classformat:
+    ignore: true
 
 management:
   endpoints:
