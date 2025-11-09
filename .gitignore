@@ -1,0 +1,31 @@
+# Maven / Gradle build outputs
+target/
+**/target/
+.gradle/
+build/
+
+# IDE metadata
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# OS / Misc
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# Java compiled classes
+*.class
+
+# Docker / runtime
+*.pid
+*.out
+
+
