@@ -1,12 +1,8 @@
 # Maven / Gradle build outputs
 target/
-target/*.*
 **/target/
-**/target/*.*
 **/target/surefire-reports/
 **/surefire-reports/
-**/target/surefire-reports/**
-**/surefire-reports/**
 .gradle/
 build/
 
