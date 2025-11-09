@@ -32,5 +32,40 @@
             effective_date="2025-11-07"
             termination_date="2025-11-14"
             governing_law="EU (German Law)"/>
+
+    <physical_trade_line_items
+            id="1"
+            trade_id="PWR-2025-11-07-001"
+            period_start_date="2025-11-07"
+            period_start_time="2025-11-07 00:00:00"
+            period_end_date="2025-11-07"
+            period_end_time="2025-11-07 01:00:00"
+            day_hour_label="Fri 00:00-01:00"
+            quantity="12.5"
+            uom="MWh"
+            capacity="50.0"
+            profile="ONE_HOUR"/>
+
+    <physical_settlement_items
+            id="1"
+            trade_id="PWR-2025-11-07-001"
+            settlement_id="SET-2025-11-07"
+            delivery_date="2025-11-07"
+            actual_quantity="1198.5"
+            uom="MWh"
+            settlement_price="75.5"
+            trade_price="75.5"
+            settlement_uom="EUR/MWh"
+            trade_uom="EUR/MWh"
+            deviation_amount="0.0"
+            deviation_penalty="0.0"
+            period_cashflow="90462.75"
+            settlement_currency="EUR"
+            trade_currency="EUR"
+            invoice_status="Provisional"/>
+
+    <physical_settlement_line_refs
+            settlement_item_id="1"
+            line_item_ref="LI-001"/>
 </dataset>
 

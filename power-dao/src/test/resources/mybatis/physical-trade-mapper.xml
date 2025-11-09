@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.power.base.dao.rdbms.mybatis.repository.physical.PhysicalTradeMapper">
+
+    <resultMap id="PhysicalLineItemResultMap"
+               type="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalLineItemEntity">
+        <id column="id" property="id"/>
+        <result column="period_start_date" property="periodStartDate"/>
+        <result column="period_start_time" property="periodStartTime"/>
+        <result column="period_end_date" property="periodEndDate"/>
+        <result column="period_end_time" property="periodEndTime"/>
+        <result column="day_hour_label" property="dayHour"/>
+        <result column="quantity" property="quantity"/>
+        <result column="uom" property="uom"/>
+        <result column="capacity" property="capacity"/>
+        <result column="profile" property="profile"/>
+    </resultMap>
+
+    <resultMap id="PhysicalSettlementItemResultMap"
+               type="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalSettlementItemEntity">
+        <id column="id" property="id"/>
+        <result column="settlement_id" property="settlementId"/>
+        <result column="delivery_date" property="deliveryDate"/>
+        <result column="actual_quantity" property="actualQuantity"/>
+        <result column="uom" property="uom"/>
+        <result column="settlement_price" property="settlementPrice"/>
+        <result column="trade_price" property="tradePrice"/>
+        <result column="settlement_uom" property="settlementUom"/>
+        <result column="trade_uom" property="tradeUom"/>
+        <result column="deviation_amount" property="deviationAmount"/>
+        <result column="deviation_penalty" property="deviationPenalty"/>
+        <result column="period_cashflow" property="periodCashflow"/>
+        <result column="settlement_currency" property="settlementCurrency"/>
+        <result column="trade_currency" property="tradeCurrency"/>
+        <result column="invoice_status" property="invoiceStatus"/>
+        <collection property="referencedLineItems" ofType="java.lang.String"
+                    column="id"
+                    select="selectSettlementLineRefsBySettlementId"/>
+    </resultMap>
+
+    <resultMap id="PhysicalTradeResultMap"
+               type="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeEntity">
+        <id column="trade_id" property="tradeId"/>
+        <result column="settlement_currency" property="settlementCurrency"/>
+        <result column="trade_currency" property="tradeCurrency"/>
+        <result column="settlement_uom" property="settlementUom"/>
+        <result column="trade_uom" property="tradeUom"/>
+        <result column="settlement_price" property="settlementPrice"/>
+        <result column="trade_price" property="tradePrice"/>
+
+        <association property="header"
+                     javaType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeHeaderEmbeddable">
+            <result column="trade_date" property="tradeDate"/>
+            <result column="trade_time" property="tradeTime"/>
+            <result column="document_type" property="documentType"/>
+            <result column="document_version" property="documentVersion"/>
+            <result column="business_unit" property="businessUnit"/>
+            <result column="book_strategy" property="bookStrategy"/>
+            <result column="trader_name" property="traderName"/>
+            <result column="agreement_id" property="agreementId"/>
+            <result column="market" property="market"/>
+            <result column="commodity" property="commodity"/>
+            <result column="transaction_type" property="transactionType"/>
+            <result column="delivery_point" property="deliveryPoint"/>
+            <result column="load_type" property="loadType"/>
+            <result column="buy_sell_indicator" property="buySellIndicator"/>
+            <result column="amendment_indicator" property="amendmentIndicator"/>
+            <association property="buyerParty"
+                         javaType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalPartyEmbeddable">
+                <result column="buyer_party_id" property="id"/>
+                <result column="buyer_party_name" property="name"/>
+                <result column="buyer_party_role" property="role"/>
+            </association>
+            <association property="sellerParty"
+                         javaType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalPartyEmbeddable">
+                <result column="seller_party_id" property="id"/>
+                <result column="seller_party_name" property="name"/>
+                <result column="seller_party_role" property="role"/>
+            </association>
+        </association>
+
+        <association property="metadata"
+                     javaType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalMetadataEmbeddable">
+            <result column="effective_date" property="effectiveDate"/>
+            <result column="termination_date" property="terminationDate"/>
+            <result column="governing_law" property="governingLaw"/>
+        </association>
+
+        <collection property="lineItems"
+                    column="trade_id"
+                    select="selectLineItemsByTradeId"
+                    ofType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalLineItemEntity"/>
+
+        <collection property="settlementItems"
+                    column="trade_id"
+                    select="selectSettlementItemsByTradeId"
+                    ofType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalSettlementItemEntity"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        SELECT
+            trade_id,
+            settlement_currency,
+            trade_currency,
+            settlement_uom,
+            trade_uom,
+            settlement_price,
+            trade_price,
+            trade_date,
+            trade_time,
+            document_type,
+            document_version,
+            buyer_party_id,
+            buyer_party_name,
+            buyer_party_role,
+            seller_party_id,
+            seller_party_name,
+            seller_party_role,
+            business_unit,
+            book_strategy,
+            trader_name,
+            agreement_id,
+            market,
+            commodity,
+            transaction_type,
+            delivery_point,
+            load_type,
+            buy_sell_indicator,
+            amendment_indicator,
+            effective_date,
+            termination_date,
+            governing_law
+        FROM physical_trades
+    </sql>
+
+    <select id="findByTradeId" parameterType="string" resultMap="PhysicalTradeResultMap">
+        <include refid="BaseSelect"/>
+        WHERE trade_id = #{tradeId}
+    </select>
+
+    <select id="findByCriteria"
+            parameterType="com.power.base.dao.rdbms.mybatis.repository.physical.PhysicalTradeSearchCriteria"
+            resultMap="PhysicalTradeResultMap">
+        <include refid="BaseSelect"/>
+        <where>
+            <if test="businessUnitValue != null">
+                AND business_unit = #{businessUnitValue}
+            </if>
+            <if test="marketValue != null">
+                AND market = #{marketValue}
+            </if>
+            <if test="traderNameValue != null">
+                AND trader_name = #{traderNameValue}
+            </if>
+            <if test="agreementIdValue != null">
+                AND agreement_id = #{agreementIdValue}
+            </if>
+            <if test="commodityValue != null">
+                AND commodity = #{commodityValue}
+            </if>
+            <if test="transactionTypeValue != null">
+                AND transaction_type = #{transactionTypeValue}
+            </if>
+            <if test="tradeDateValue != null">
+                AND trade_date = #{tradeDateValue}
+            </if>
+            <if test="tradeTimeFromValue != null">
+                AND trade_time &gt;= #{tradeTimeFromValue}
+            </if>
+            <if test="tradeTimeToValue != null">
+                AND trade_time &lt;= #{tradeTimeToValue}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByTradeId" parameterType="string">
+        DELETE FROM physical_trades WHERE trade_id = #{tradeId}
+    </delete>
+
+    <delete id="deleteLineItemsByTradeId" parameterType="string">
+        DELETE FROM physical_trade_line_items WHERE trade_id = #{tradeId}
+    </delete>
+
+    <delete id="deleteSettlementLineRefsByTradeId" parameterType="string">
+        DELETE FROM physical_settlement_line_refs
+        WHERE settlement_item_id IN (
+            SELECT id FROM physical_settlement_items WHERE trade_id = #{tradeId}
+        )
+    </delete>
+
+    <delete id="deleteSettlementItemsByTradeId" parameterType="string">
+        DELETE FROM physical_settlement_items WHERE trade_id = #{tradeId}
+    </delete>
+
+    <insert id="upsert" parameterType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeEntity">
+        MERGE INTO physical_trades (
+            trade_id,
+            settlement_currency,
+            trade_currency,
+            settlement_uom,
+            trade_uom,
+            settlement_price,
+            trade_price,
+            trade_date,
+            trade_time,
+            document_type,
+            document_version,
+            buyer_party_id,
+            buyer_party_name,
+            buyer_party_role,
+            seller_party_id,
+            seller_party_name,
+            seller_party_role,
+            business_unit,
+            book_strategy,
+            trader_name,
+            agreement_id,
+            market,
+            commodity,
+            transaction_type,
+            delivery_point,
+            load_type,
+            buy_sell_indicator,
+            amendment_indicator,
+            effective_date,
+            termination_date,
+            governing_law
+        ) KEY (trade_id)
+        VALUES (
+            #{tradeId},
+            #{settlementCurrency},
+            #{tradeCurrency},
+            #{settlementUom},
+            #{tradeUom},
+            #{settlementPrice},
+            #{tradePrice},
+            #{header.tradeDate},
+            #{header.tradeTime},
+            #{header.documentType},
+            #{header.documentVersion},
+            #{header.buyerParty.id},
+            #{header.buyerParty.name},
+            #{header.buyerParty.role},
+            #{header.sellerParty.id},
+            #{header.sellerParty.name},
+            #{header.sellerParty.role},
+            #{header.businessUnit},
+            #{header.bookStrategy},
+            #{header.traderName},
+            #{header.agreementId},
+            #{header.market},
+            #{header.commodity},
+            #{header.transactionType},
+            #{header.deliveryPoint},
+            #{header.loadType},
+            #{header.buySellIndicator},
+            #{header.amendmentIndicator},
+            #{metadata.effectiveDate},
+            #{metadata.terminationDate},
+            #{metadata.governingLaw}
+        )
+    </insert>
+
+    <insert id="insertLineItem"
+            useGeneratedKeys="true"
+            keyProperty="item.id">
+        INSERT INTO physical_trade_line_items (
+            trade_id,
+            period_start_date,
+            period_start_time,
+            period_end_date,
+            period_end_time,
+            day_hour_label,
+            quantity,
+            uom,
+            capacity,
+            profile
+        ) VALUES (
+            #{tradeId},
+            #{item.periodStartDate},
+            #{item.periodStartTime},
+            #{item.periodEndDate},
+            #{item.periodEndTime},
+            #{item.dayHour},
+            #{item.quantity},
+            #{item.uom},
+            #{item.capacity},
+            #{item.profile}
+        )
+    </insert>
+
+    <insert id="insertSettlementItem"
+            useGeneratedKeys="true"
+            keyProperty="item.id">
+        INSERT INTO physical_settlement_items (
+            trade_id,
+            settlement_id,
+            delivery_date,
+            actual_quantity,
+            uom,
+            settlement_price,
+            trade_price,
+            settlement_uom,
+            trade_uom,
+            deviation_amount,
+            deviation_penalty,
+            period_cashflow,
+            settlement_currency,
+            trade_currency,
+            invoice_status
+        ) VALUES (
+            #{tradeId},
+            #{item.settlementId},
+            #{item.deliveryDate},
+            #{item.actualQuantity},
+            #{item.uom},
+            #{item.settlementPrice},
+            #{item.tradePrice},
+            #{item.settlementUom},
+            #{item.tradeUom},
+            #{item.deviationAmount},
+            #{item.deviationPenalty},
+            #{item.periodCashflow},
+            #{item.settlementCurrency},
+            #{item.tradeCurrency},
+            #{item.invoiceStatus}
+        )
+    </insert>
+
+    <insert id="insertSettlementLineRef">
+        INSERT INTO physical_settlement_line_refs (settlement_item_id, line_item_ref)
+        VALUES (#{settlementItemId}, #{lineRef})
+    </insert>
+
+    <select id="selectLineItemsByTradeId"
+            resultMap="PhysicalLineItemResultMap"
+            parameterType="string">
+        SELECT
+            id,
+            trade_id,
+            period_start_date,
+            period_start_time,
+            period_end_date,
+            period_end_time,
+            day_hour_label,
+            quantity,
+            uom,
+            capacity,
+            profile
+        FROM physical_trade_line_items
+        WHERE trade_id = #{tradeId}
+        ORDER BY period_start_date, period_start_time
+    </select>
+
+    <select id="selectSettlementItemsByTradeId"
+            resultMap="PhysicalSettlementItemResultMap"
+            parameterType="string">
+        SELECT
+            id,
+            trade_id,
+            settlement_id,
+            delivery_date,
+            actual_quantity,
+            uom,
+            settlement_price,
+            trade_price,
+            settlement_uom,
+            trade_uom,
+            deviation_amount,
+            deviation_penalty,
+            period_cashflow,
+            settlement_currency,
+            trade_currency,
+            invoice_status
+        FROM physical_settlement_items
+        WHERE trade_id = #{tradeId}
+        ORDER BY id
+    </select>
+
+    <select id="selectSettlementLineRefsBySettlementId"
+            parameterType="long"
+            resultType="string">
+        SELECT line_item_ref
+        FROM physical_settlement_line_refs
+        WHERE settlement_item_id = #{settlementItemId}
+        ORDER BY line_item_ref
+    </select>
+</mapper>
+

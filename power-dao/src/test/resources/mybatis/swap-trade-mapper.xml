@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.power.base.dao.rdbms.mybatis.repository.swap.SwapTradeMapper">
+
+    <resultMap id="SwapPeriodResultMap"
+               type="com.power.base.dao.rdbms.jpa.persistence.swap.SwapPeriodEntity">
+        <id column="id" property="id"/>
+        <result column="notional_quantity" property="notionalQuantity"/>
+        <result column="notional_uom" property="notionalUom"/>
+        <result column="term_start_date" property="termStartDate"/>
+        <result column="term_start_time" property="termStartTime"/>
+        <result column="term_end_date" property="termEndDate"/>
+        <result column="term_end_time" property="termEndTime"/>
+        <result column="period_frequency" property="periodFrequency"/>
+        <result column="fixing_index" property="fixingIndex"/>
+        <result column="load_shape" property="loadShape"/>
+    </resultMap>
+
+    <resultMap id="SwapTradeResultMap"
+               type="com.power.base.dao.rdbms.jpa.persistence.swap.SwapTradeEntity">
+        <id column="trade_id" property="tradeId"/>
+
+        <association property="header"
+                     javaType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapTradeHeaderEmbeddable">
+            <result column="trade_date" property="tradeDate"/>
+            <result column="trade_time" property="tradeTime"/>
+            <result column="document_type" property="documentType"/>
+            <result column="document_version" property="documentVersion"/>
+            <result column="business_unit" property="businessUnit"/>
+            <result column="book_strategy" property="bookStrategy"/>
+            <result column="trader_name" property="traderName"/>
+            <result column="agreement_id" property="agreementId"/>
+            <result column="market" property="market"/>
+            <result column="commodity" property="commodity"/>
+            <result column="transaction_type" property="transactionType"/>
+            <result column="reference_zone" property="referenceZone"/>
+            <result column="buy_sell_indicator" property="buySellIndicator"/>
+            <result column="amendment_indicator" property="amendmentIndicator"/>
+            <association property="buyerParty"
+                         javaType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapPartyEmbeddable">
+                <result column="buyer_party_id" property="id"/>
+                <result column="buyer_party_name" property="name"/>
+                <result column="buyer_party_role" property="role"/>
+            </association>
+            <association property="sellerParty"
+                         javaType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapPartyEmbeddable">
+                <result column="seller_party_id" property="id"/>
+                <result column="seller_party_name" property="name"/>
+                <result column="seller_party_role" property="role"/>
+            </association>
+        </association>
+
+        <association property="settlementInfo"
+                     javaType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapSettlementInfoEmbeddable">
+            <result column="total_notional" property="totalNotional"/>
+            <result column="total_notional_uom" property="totalNotionalUom"/>
+            <result column="pricing_mechanism" property="pricingMechanism"/>
+            <result column="fixed_price" property="fixedPrice"/>
+            <result column="spread" property="spread"/>
+            <result column="settlement_currency" property="settlementCurrency"/>
+            <result column="trade_currency" property="tradeCurrency"/>
+            <result column="settlement_uom" property="settlementUom"/>
+            <result column="trade_uom" property="tradeUom"/>
+            <result column="settlement_type" property="settlementType"/>
+            <result column="settlement_date" property="settlementDate"/>
+            <result column="start_applicability_date" property="startApplicabilityDate"/>
+            <result column="start_applicability_time" property="startApplicabilityTime"/>
+            <result column="end_applicability_date" property="endApplicabilityDate"/>
+            <result column="end_applicability_time" property="endApplicabilityTime"/>
+            <result column="payment_offset" property="paymentOffset"/>
+            <result column="total_expected_value" property="totalExpectedValue"/>
+            <result column="rounding" property="rounding"/>
+        </association>
+
+        <association property="metadata"
+                     javaType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapMetadataEmbeddable">
+            <result column="effective_date" property="effectiveDate"/>
+            <result column="termination_date" property="terminationDate"/>
+            <result column="governing_law" property="governingLaw"/>
+            <result column="is_clearable" property="clearable"/>
+            <result column="uti" property="uti"/>
+        </association>
+
+        <collection property="periods"
+                    column="trade_id"
+                    select="selectPeriodsByTradeId"
+                    ofType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapPeriodEntity"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        SELECT
+            trade_id,
+            trade_date,
+            trade_time,
+            document_type,
+            document_version,
+            buyer_party_id,
+            buyer_party_name,
+            buyer_party_role,
+            seller_party_id,
+            seller_party_name,
+            seller_party_role,
+            business_unit,
+            book_strategy,
+            trader_name,
+            agreement_id,
+            market,
+            commodity,
+            transaction_type,
+            reference_zone,
+            buy_sell_indicator,
+            amendment_indicator,
+            total_notional,
+            total_notional_uom,
+            pricing_mechanism,
+            fixed_price,
+            spread,
+            settlement_currency,
+            trade_currency,
+            settlement_uom,
+            trade_uom,
+            settlement_type,
+            settlement_date,
+            start_applicability_date,
+            start_applicability_time,
+            end_applicability_date,
+            end_applicability_time,
+            payment_offset,
+            total_expected_value,
+            rounding,
+            effective_date,
+            termination_date,
+            governing_law,
+            is_clearable,
+            uti
+        FROM swap_trades
+    </sql>
+
+    <select id="findByTradeId" parameterType="string" resultMap="SwapTradeResultMap">
+        <include refid="BaseSelect"/>
+        WHERE trade_id = #{tradeId}
+    </select>
+
+    <select id="findByCriteria"
+            parameterType="com.power.base.dao.rdbms.mybatis.repository.swap.SwapTradeSearchCriteria"
+            resultMap="SwapTradeResultMap">
+        <include refid="BaseSelect"/>
+        <where>
+            <if test="businessUnitValue != null">
+                AND business_unit = #{businessUnitValue}
+            </if>
+            <if test="marketValue != null">
+                AND market = #{marketValue}
+            </if>
+            <if test="traderNameValue != null">
+                AND trader_name = #{traderNameValue}
+            </if>
+            <if test="agreementIdValue != null">
+                AND agreement_id = #{agreementIdValue}
+            </if>
+            <if test="commodityValue != null">
+                AND commodity = #{commodityValue}
+            </if>
+            <if test="transactionTypeValue != null">
+                AND transaction_type = #{transactionTypeValue}
+            </if>
+            <if test="referenceZoneValue != null">
+                AND reference_zone = #{referenceZoneValue}
+            </if>
+            <if test="tradeDateValue != null">
+                AND trade_date = #{tradeDateValue}
+            </if>
+            <if test="tradeTimeFromValue != null">
+                AND trade_time &gt;= #{tradeTimeFromValue}
+            </if>
+            <if test="tradeTimeToValue != null">
+                AND trade_time &lt;= #{tradeTimeToValue}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByTradeId" parameterType="string">
+        DELETE FROM swap_trades WHERE trade_id = #{tradeId}
+    </delete>
+
+    <delete id="deletePeriodsByTradeId" parameterType="string">
+        DELETE FROM swap_periods WHERE trade_id = #{tradeId}
+    </delete>
+
+    <insert id="upsert" parameterType="com.power.base.dao.rdbms.jpa.persistence.swap.SwapTradeEntity">
+        MERGE INTO swap_trades (
+            trade_id,
+            trade_date,
+            trade_time,
+            document_type,
+            document_version,
+            buyer_party_id,
+            buyer_party_name,
+            buyer_party_role,
+            seller_party_id,
+            seller_party_name,
+            seller_party_role,
+            business_unit,
+            book_strategy,
+            trader_name,
+            agreement_id,
+            market,
+            commodity,
+            transaction_type,
+            reference_zone,
+            buy_sell_indicator,
+            amendment_indicator,
+            total_notional,
+            total_notional_uom,
+            pricing_mechanism,
+            fixed_price,
+            spread,
+            settlement_currency,
+            trade_currency,
+            settlement_uom,
+            trade_uom,
+            settlement_type,
+            settlement_date,
+            start_applicability_date,
+            start_applicability_time,
+            end_applicability_date,
+            end_applicability_time,
+            payment_offset,
+            total_expected_value,
+            rounding,
+            effective_date,
+            termination_date,
+            governing_law,
+            is_clearable,
+            uti
+        ) KEY (trade_id)
+        VALUES (
+            #{tradeId},
+            #{header.tradeDate},
+            #{header.tradeTime},
+            #{header.documentType},
+            #{header.documentVersion},
+            #{header.buyerParty.id},
+            #{header.buyerParty.name},
+            #{header.buyerParty.role},
+            #{header.sellerParty.id},
+            #{header.sellerParty.name},
+            #{header.sellerParty.role},
+            #{header.businessUnit},
+            #{header.bookStrategy},
+            #{header.traderName},
+            #{header.agreementId},
+            #{header.market},
+            #{header.commodity},
+            #{header.transactionType},
+            #{header.referenceZone},
+            #{header.buySellIndicator},
+            #{header.amendmentIndicator},
+            #{settlementInfo.totalNotional},
+            #{settlementInfo.totalNotionalUom},
+            #{settlementInfo.pricingMechanism},
+            #{settlementInfo.fixedPrice},
+            #{settlementInfo.spread},
+            #{settlementInfo.settlementCurrency},
+            #{settlementInfo.tradeCurrency},
+            #{settlementInfo.settlementUom},
+            #{settlementInfo.tradeUom},
+            #{settlementInfo.settlementType},
+            #{settlementInfo.settlementDate},
+            #{settlementInfo.startApplicabilityDate},
+            #{settlementInfo.startApplicabilityTime},
+            #{settlementInfo.endApplicabilityDate},
+            #{settlementInfo.endApplicabilityTime},
+            #{settlementInfo.paymentOffset},
+            #{settlementInfo.totalExpectedValue},
+            #{settlementInfo.rounding},
+            #{metadata.effectiveDate},
+            #{metadata.terminationDate},
+            #{metadata.governingLaw},
+            #{metadata.clearable},
+            #{metadata.uti}
+        )
+    </insert>
+
+    <insert id="insertPeriod"
+            useGeneratedKeys="true"
+            keyProperty="period.id">
+        INSERT INTO swap_periods (
+            trade_id,
+            notional_quantity,
+            notional_uom,
+            term_start_date,
+            term_start_time,
+            term_end_date,
+            term_end_time,
+            period_frequency,
+            fixing_index,
+            load_shape
+        ) VALUES (
+            #{tradeId},
+            #{period.notionalQuantity},
+            #{period.notionalUom},
+            #{period.termStartDate},
+            #{period.termStartTime},
+            #{period.termEndDate},
+            #{period.termEndTime},
+            #{period.periodFrequency},
+            #{period.fixingIndex},
+            #{period.loadShape}
+        )
+    </insert>
+
+    <select id="selectPeriodsByTradeId"
+            parameterType="string"
+            resultMap="SwapPeriodResultMap">
+        SELECT
+            id,
+            trade_id,
+            notional_quantity,
+            notional_uom,
+            term_start_date,
+            term_start_time,
+            term_end_date,
+            term_end_time,
+            period_frequency,
+            fixing_index,
+            load_shape
+        FROM swap_periods
+        WHERE trade_id = #{tradeId}
+        ORDER BY term_start_date, term_start_time
+    </select>
+</mapper>
+

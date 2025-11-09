@@ -1,7 +1,7 @@
 package com.power.base.rest.controller;
 
-import com.power.base.dao.rdbms.repository.swap.SwapTradeSearchCriteria;
-import com.power.base.dao.rdbms.service.SwapTradeService;
+import com.power.base.dao.rdbms.jpa.repository.swap.SwapTradeSearchCriteria;
+import com.power.base.dao.rdbms.jpa.service.SwapTradeService;
 import com.power.base.datamodel.dto.financials.SwapPowerTradeDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

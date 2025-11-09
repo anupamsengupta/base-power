@@ -1,7 +1,7 @@
 package com.power.base.rest.controller;
 
-import com.power.base.dao.rdbms.repository.physical.PhysicalTradeSearchCriteria;
-import com.power.base.dao.rdbms.service.PhysicalTradeService;
+import com.power.base.dao.rdbms.jpa.repository.physical.PhysicalTradeSearchCriteria;
+import com.power.base.dao.rdbms.jpa.service.PhysicalTradeService;
 import com.power.base.datamodel.dto.physicals.PhysicalPowerTradeDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

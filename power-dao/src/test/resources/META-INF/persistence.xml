@@ -7,11 +7,11 @@
     <persistence-unit name="test-pu" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>com.power.base.dao.rdbms.persistence.physical.PhysicalTradeEntity</class>
-        <class>com.power.base.dao.rdbms.persistence.physical.PhysicalLineItemEntity</class>
-        <class>com.power.base.dao.rdbms.persistence.physical.PhysicalSettlementItemEntity</class>
-        <class>com.power.base.dao.rdbms.persistence.swap.SwapTradeEntity</class>
-        <class>com.power.base.dao.rdbms.persistence.swap.SwapPeriodEntity</class>
+            <class>com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeEntity</class>
+            <class>com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalLineItemEntity</class>
+            <class>com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalSettlementItemEntity</class>
+            <class>com.power.base.dao.rdbms.jpa.persistence.swap.SwapTradeEntity</class>
+            <class>com.power.base.dao.rdbms.jpa.persistence.swap.SwapPeriodEntity</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>

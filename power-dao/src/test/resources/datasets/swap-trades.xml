@@ -43,5 +43,18 @@
             governing_law="English Law"
             is_clearable="true"
             uti="FINPWR20251107ABC123"/>
+
+    <swap_periods
+            id="1"
+            trade_id="FIN-2025-11-07-001"
+            notional_quantity="100.0"
+            notional_uom="MWh"
+            term_start_date="2025-11-01"
+            term_start_time="2025-11-01 00:00:00"
+            term_end_date="2025-12-01"
+            term_end_time="2025-12-01 00:00:00"
+            period_frequency="Monthly"
+            fixing_index="EPEX-DA-BASE"
+            load_shape="Base"/>
 </dataset>
 
