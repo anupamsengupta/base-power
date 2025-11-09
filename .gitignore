@@ -1,5 +1,6 @@
 # Maven / Gradle build outputs
 target/
+target/**
 **/target/
 .gradle/
 build/
