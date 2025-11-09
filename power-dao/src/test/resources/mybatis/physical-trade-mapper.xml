@@ -52,6 +52,7 @@
 
         <association property="header"
                      javaType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeHeaderEmbeddable">
+            <result column="tenant_id" property="tenantId"/>
             <result column="trade_date" property="tradeDate"/>
             <result column="trade_time" property="tradeTime"/>
             <result column="document_type" property="documentType"/>
@@ -102,6 +103,7 @@
     <sql id="BaseSelect">
         SELECT
             trade_id,
+            tenant_id,
             settlement_currency,
             trade_currency,
             settlement_uom,
@@ -147,6 +149,9 @@
         <where>
             <if test="businessUnitValue != null">
                 AND business_unit = #{businessUnitValue}
+            </if>
+            <if test="tenantIdValue != null">
+                AND tenant_id = #{tenantIdValue}
             </if>
             <if test="marketValue != null">
                 AND market = #{marketValue}
@@ -197,6 +202,7 @@
     <insert id="upsert" parameterType="com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeEntity">
         MERGE INTO physical_trades (
             trade_id,
+            tenant_id,
             settlement_currency,
             trade_currency,
             settlement_uom,
@@ -230,6 +236,7 @@
         ) KEY (trade_id)
         VALUES (
             #{tradeId},
+            #{header.tenantId},
             #{settlementCurrency},
             #{tradeCurrency},
             #{settlementUom},

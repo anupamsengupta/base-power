@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public class PhysicalTradeSearchCriteria {
 
+    private String tenantId;
     private String businessUnit;
     private String market;
     private String traderName;
@@ -18,6 +19,14 @@ public class PhysicalTradeSearchCriteria {
 
     public Optional<String> getBusinessUnit() {
         return Optional.ofNullable(businessUnit);
+    }
+
+    public Optional<String> getTenantId() {
+        return Optional.ofNullable(tenantId);
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public void setBusinessUnit(String businessUnit) {

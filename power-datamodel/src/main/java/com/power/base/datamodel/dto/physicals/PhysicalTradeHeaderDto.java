@@ -13,6 +13,7 @@ public class PhysicalTradeHeaderDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String tradeId;
+    private String tenantId;
     private LocalDate tradeDate;
     private Instant tradeTime;
     private DocumentType documentType;
@@ -35,6 +36,7 @@ public class PhysicalTradeHeaderDto implements Serializable {
     }
 
     public PhysicalTradeHeaderDto(String tradeId,
+                                  String tenantId,
                                   LocalDate tradeDate,
                                   Instant tradeTime,
                                   DocumentType documentType,
@@ -53,6 +55,7 @@ public class PhysicalTradeHeaderDto implements Serializable {
                                   BuySellIndicator buySellIndicator,
                                   boolean amendmentIndicator) {
         this.tradeId = tradeId;
+        this.tenantId = tenantId;
         this.tradeDate = tradeDate;
         this.tradeTime = tradeTime;
         this.documentType = documentType;
@@ -78,6 +81,14 @@ public class PhysicalTradeHeaderDto implements Serializable {
 
     public void setTradeId(String tradeId) {
         this.tradeId = tradeId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public LocalDate getTradeDate() {

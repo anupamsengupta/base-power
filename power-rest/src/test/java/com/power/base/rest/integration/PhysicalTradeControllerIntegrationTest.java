@@ -80,6 +80,7 @@ class PhysicalTradeControllerIntegrationTest {
         restTemplate.postForEntity(baseUrl(), request, PhysicalPowerTradeDto.class);
 
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl())
+                .queryParam("tenantId", "TENANT_A")
                 .queryParam("businessUnit", "Nord Pool Trading Desk")
                 .queryParam("traderName", "John Doe (TRDR-456)")
                 .toUriString();
@@ -100,6 +101,7 @@ class PhysicalTradeControllerIntegrationTest {
     private PhysicalPowerTradeDto buildPhysicalTrade(String tradeId) {
         PhysicalTradeHeaderDto header = new PhysicalTradeHeaderDto();
         header.setTradeId(tradeId);
+        header.setTenantId("TENANT_A");
         header.setTradeDate(LocalDate.of(2025, 11, 7));
         header.setTradeTime(Instant.parse("2025-11-07T14:30:00Z"));
         header.setDocumentType(DocumentType.CONFIRMATION);

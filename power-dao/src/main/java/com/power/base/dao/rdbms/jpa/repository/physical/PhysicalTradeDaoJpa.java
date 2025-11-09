@@ -54,6 +54,9 @@ public class PhysicalTradeDaoJpa implements PhysicalTradeDao {
 
         List<Predicate> predicates = new ArrayList<>();
 
+        criteria.getTenantId()
+                .ifPresent(tenant -> predicates.add(cb.equal(root.get("header").get("tenantId"), tenant)));
+
         criteria.getBusinessUnit()
                 .ifPresent(bu -> predicates.add(cb.equal(root.get("header").get("businessUnit"), bu)));
 

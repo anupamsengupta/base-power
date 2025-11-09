@@ -2,6 +2,7 @@
 <dataset>
     <swap_trades
             trade_id="FIN-2025-11-07-001"
+            tenant_id="TENANT_A"
             settlement_currency="EUR"
             trade_currency="EUR"
             settlement_uom="EUR/MWh"

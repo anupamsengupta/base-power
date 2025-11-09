@@ -45,6 +45,7 @@ public class PhysicalTradeController {
 
     @GetMapping
     public List<PhysicalPowerTradeDto> search(
+            @RequestParam(name = "tenantId", required = false) String tenantId,
             @RequestParam(name = "businessUnit", required = false) String businessUnit,
             @RequestParam(name = "market", required = false) String market,
             @RequestParam(name = "traderName", required = false) String traderName,
@@ -56,6 +57,7 @@ public class PhysicalTradeController {
             @RequestParam(name = "tradeTimeTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant tradeTimeTo) {
 
         PhysicalTradeSearchCriteria criteria = new PhysicalTradeSearchCriteria();
+        criteria.setTenantId(decode(tenantId));
         criteria.setBusinessUnit(decode(businessUnit));
         criteria.setMarket(decode(market));
         criteria.setTraderName(decode(traderName));

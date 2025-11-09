@@ -78,6 +78,7 @@ class SwapTradeControllerIntegrationTest {
         restTemplate.postForEntity(baseUrl(), request, SwapPowerTradeDto.class);
 
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl())
+                .queryParam("tenantId", "TENANT_A")
                 .queryParam("traderName", "Jane Smith (TRDR-789)")
                 .queryParam("referenceZone", "DE-LU")
                 .toUriString();
@@ -98,6 +99,7 @@ class SwapTradeControllerIntegrationTest {
     private SwapPowerTradeDto buildSwapTrade(String tradeId) {
         SwapTradeHeaderDto header = new SwapTradeHeaderDto();
         header.setTradeId(tradeId);
+        header.setTenantId("TENANT_A");
         header.setTradeDate(LocalDate.of(2025, 11, 7));
         header.setTradeTime(Instant.parse("2025-11-07T14:30:00Z"));
         header.setDocumentType(DocumentType.CONFIRMATION);

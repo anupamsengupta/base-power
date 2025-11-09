@@ -17,6 +17,9 @@ import java.time.LocalDate;
 @Embeddable
 public class PhysicalTradeHeaderEmbeddable implements Serializable {
 
+    @Column(name = "tenant_id")
+    private String tenantId;
+
     @Column(name = "trade_date")
     private LocalDate tradeDate;
 
@@ -214,6 +217,14 @@ public class PhysicalTradeHeaderEmbeddable implements Serializable {
 
     public void setAmendmentIndicator(boolean amendmentIndicator) {
         this.amendmentIndicator = amendmentIndicator;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }
 

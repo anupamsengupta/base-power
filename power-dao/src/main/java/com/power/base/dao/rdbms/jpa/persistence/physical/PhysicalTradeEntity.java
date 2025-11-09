@@ -145,6 +145,7 @@ public class PhysicalTradeEntity {
 
     private static PhysicalTradeHeaderEmbeddable toHeaderEmbeddable(PhysicalTradeHeaderDto headerDto) {
         PhysicalTradeHeaderEmbeddable headerEmbeddable = new PhysicalTradeHeaderEmbeddable();
+        headerEmbeddable.setTenantId(headerDto.getTenantId());
         headerEmbeddable.setTradeDate(headerDto.getTradeDate());
         headerEmbeddable.setTradeTime(headerDto.getTradeTime());
         headerEmbeddable.setDocumentType(headerDto.getDocumentType());
@@ -191,6 +192,7 @@ public class PhysicalTradeEntity {
     private static PhysicalTradeHeaderDto toHeaderDto(PhysicalTradeHeaderEmbeddable header, String tradeId) {
         PhysicalTradeHeaderDto dto = new PhysicalTradeHeaderDto();
         dto.setTradeId(tradeId);
+        dto.setTenantId(header.getTenantId());
         dto.setTradeDate(header.getTradeDate());
         dto.setTradeTime(header.getTradeTime());
         dto.setDocumentType(header.getDocumentType());

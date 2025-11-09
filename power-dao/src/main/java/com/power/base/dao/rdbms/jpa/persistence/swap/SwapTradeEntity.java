@@ -73,6 +73,7 @@ public class SwapTradeEntity {
 
     private static SwapTradeHeaderEmbeddable toHeaderEmbeddable(SwapTradeHeaderDto dto) {
         SwapTradeHeaderEmbeddable header = new SwapTradeHeaderEmbeddable();
+        header.setTenantId(dto.getTenantId());
         header.setTradeDate(dto.getTradeDate());
         header.setTradeTime(dto.getTradeTime());
         header.setDocumentType(dto.getDocumentType());
@@ -146,6 +147,7 @@ public class SwapTradeEntity {
     private static SwapTradeHeaderDto toHeaderDto(SwapTradeHeaderEmbeddable header, String tradeId) {
         SwapTradeHeaderDto dto = new SwapTradeHeaderDto();
         dto.setTradeId(tradeId);
+        dto.setTenantId(header.getTenantId());
         dto.setTradeDate(header.getTradeDate());
         dto.setTradeTime(header.getTradeTime());
         dto.setDocumentType(header.getDocumentType());

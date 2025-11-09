@@ -10,6 +10,10 @@ public class PhysicalTradeSearchCriteria
         return super.getBusinessUnit().orElse(null);
     }
 
+    public String getTenantIdValue() {
+        return super.getTenantId().orElse(null);
+    }
+
     public String getMarketValue() {
         return super.getMarket().orElse(null);
     }
