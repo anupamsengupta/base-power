@@ -1,0 +1,17 @@
+com\power\base\datamodel\dto\common\Profile.class
+com\power\base\datamodel\dto\physicals\PhysicalLineItemDto.class
+com\power\base\datamodel\dto\common\PartyDto.class
+com\power\base\datamodel\dto\common\BuySellIndicator.class
+com\power\base\datamodel\dto\financials\SwapSettlementInfoDto.class
+com\power\base\datamodel\dto\financials\SwapMetadataDto.class
+com\power\base\datamodel\dto\physicals\PhysicalSettlementInfoDto.class
+com\power\base\datamodel\dto\financials\SwapTradeDetailsDto.class
+com\power\base\datamodel\dto\physicals\PhysicalTradeDetailsDto.class
+com\power\base\datamodel\dto\financials\SwapPeriodDto.class
+com\power\base\datamodel\dto\physicals\PhysicalMetadataDto.class
+com\power\base\datamodel\dto\financials\SwapPowerTradeDto.class
+com\power\base\datamodel\dto\financials\SwapTradeHeaderDto.class
+com\power\base\datamodel\dto\physicals\PhysicalPowerTradeDto.class
+com\power\base\datamodel\dto\physicals\PhysicalSettlementItemDto.class
+com\power\base\datamodel\dto\common\DocumentType.class
+com\power\base\datamodel\dto\physicals\PhysicalTradeHeaderDto.class

@@ -88,6 +88,5 @@ public class SwapTradeDaoJpa implements SwapTradeDao {
         return entityManager.createQuery(query).getResultList();
     }
 }
-package com.power.base.dao.rdbms.repository.swap;
 
 

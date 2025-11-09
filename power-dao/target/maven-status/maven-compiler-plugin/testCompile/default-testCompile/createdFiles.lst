@@ -1,0 +1,2 @@
+com\power\base\dao\rdbms\repository\physical\PhysicalTradeDaoJpaDbUnitTest.class
+com\power\base\dao\rdbms\repository\swap\SwapTradeDaoJpaDbUnitTest.class
