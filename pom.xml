@@ -15,6 +15,7 @@
     <modules>
         <module>power-datamodel</module>
         <module>power-dao</module>
+        <module>power-timeseries</module>
         <module>power-rest</module>
         <module>power-component</module>
     </modules>
@@ -31,6 +32,7 @@
         <aws.sdk.version>2.25.44</aws.sdk.version>
         <dbunit.version>2.7.3</dbunit.version>
         <h2.version>2.2.224</h2.version>
+        <influxdb.client.version>7.1.0</influxdb.client.version>
     </properties>
 
     <dependencyManagement>
@@ -84,6 +86,11 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
             </dependency>
+        <dependency>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>${influxdb.client.version}</version>
+        </dependency>
         </dependencies>
     </dependencyManagement>
 
