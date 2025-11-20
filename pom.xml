@@ -18,6 +18,7 @@
         <module>power-timeseries</module>
         <module>power-rest</module>
         <module>power-component</module>
+        <module>power-microbenchmark</module>
     </modules>
 
     <properties>
