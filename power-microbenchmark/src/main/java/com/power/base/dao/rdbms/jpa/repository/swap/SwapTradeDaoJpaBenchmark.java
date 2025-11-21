@@ -1,8 +1,6 @@
-package com.power.base.benchmark.micro;
+package com.power.base.dao.rdbms.jpa.repository.swap;
 
 import com.power.base.dao.rdbms.jpa.persistence.swap.SwapTradeEntity;
-import com.power.base.dao.rdbms.jpa.repository.swap.SwapTradeDaoJpa;
-import com.power.base.dao.rdbms.jpa.repository.swap.SwapTradeSearchCriteria;
 import com.power.base.datamodel.dto.common.BuySellIndicator;
 import com.power.base.datamodel.dto.common.DocumentType;
 import com.power.base.datamodel.dto.common.PartyDto;
@@ -57,7 +55,8 @@ public class SwapTradeDaoJpaBenchmark {
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
         try {
-            // Clean up any existing data
+            // Clean up any existing data - delete child entities first
+            entityManager.createQuery("DELETE FROM SwapPeriodEntity").executeUpdate();
             entityManager.createQuery("DELETE FROM SwapTradeEntity").executeUpdate();
             entityManager.flush();
             

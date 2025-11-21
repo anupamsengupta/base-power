@@ -1,8 +1,6 @@
-package com.power.base.benchmark.micro;
+package com.power.base.dao.rdbms.jpa.repository.physical;
 
 import com.power.base.dao.rdbms.jpa.persistence.physical.PhysicalTradeEntity;
-import com.power.base.dao.rdbms.jpa.repository.physical.PhysicalTradeDaoJpa;
-import com.power.base.dao.rdbms.jpa.repository.physical.PhysicalTradeSearchCriteria;
 import com.power.base.datamodel.dto.common.BuySellIndicator;
 import com.power.base.datamodel.dto.common.DocumentType;
 import com.power.base.datamodel.dto.common.PartyDto;
@@ -59,7 +57,13 @@ public class PhysicalTradeDaoJpaBenchmark {
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
         try {
-            // Clean up any existing data
+            // Clean up any existing data - delete child entities first
+            // Delete ElementCollection table data first
+            entityManager.createNativeQuery("DELETE FROM physical_settlement_line_refs").executeUpdate();
+            // Delete child entities
+            entityManager.createQuery("DELETE FROM PhysicalSettlementItemEntity").executeUpdate();
+            entityManager.createQuery("DELETE FROM PhysicalLineItemEntity").executeUpdate();
+            // Delete parent entities
             entityManager.createQuery("DELETE FROM PhysicalTradeEntity").executeUpdate();
             entityManager.flush();
             
