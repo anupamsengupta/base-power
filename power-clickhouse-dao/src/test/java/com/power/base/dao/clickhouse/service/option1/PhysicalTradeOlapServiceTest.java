@@ -194,9 +194,9 @@ class PhysicalTradeOlapServiceTest {
     void tearDown() {
         // Clean up test data
         try {
-            //service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_1);
-            //service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_2);
-            //service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_3);
+            service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_1);
+            service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_2);
+            service.deleteByTradeId(TENANT_ID, TEST_TRADE_ID_3);
         } catch (Exception e) {
             // Ignore cleanup errors
         }
