@@ -1,0 +1,15 @@
+# Test configuration for ClickHouse
+# This file is used by tests to configure ClickHouse connection
+
+clickhouse:
+  enabled: true
+  compress: false
+  url: jdbc:clickhouse://localhost:8123/mydb
+  database: mydb
+  username: admin
+  password: "supersecret"
+  connection-timeout: 30000
+  socket-timeout: 30000
+  max-connections: 10
+  min-idle-connections: 2
+

@@ -1,0 +1,26 @@
+# ClickHouse Configuration Properties
+# Copy this to your application.yml or application.properties
+
+clickhouse:
+  enabled: true
+  compress: false
+  url: jdbc:clickhouse://localhost:8123/mydb
+  database: mydb
+  username: admin
+  password: "supersecret"
+  connection-timeout: 30000
+  socket-timeout: 30000
+  max-connections: 10
+  min-idle-connections: 2
+
+# Alternative properties format (for application.properties):
+# clickhouse.enabled=true
+# clickhouse.url=jdbc:clickhouse://localhost:8123/default
+# clickhouse.database=default
+# clickhouse.username=default
+# clickhouse.password=
+# clickhouse.connection-timeout=30000
+# clickhouse.socket-timeout=30000
+# clickhouse.max-connections=10
+# clickhouse.min-idle-connections=2
+
